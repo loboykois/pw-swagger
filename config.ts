@@ -5,6 +5,7 @@ dotenv.config();
 const envSchema = Joi.object({
   SWAGGER_URL: Joi.string(),
   BASE_URL: Joi.string(),
+  AUTHORS_URL: Joi.string(),
 }).unknown(true);
 
 const envVars = envSchema.validate(process.env, {
@@ -19,4 +20,5 @@ if (envVars.error) {
 export class Config {
   static readonly SWAGGER_URL: string = envVars.value.SWAGGER_URL;
   static readonly BASE_URL: string = envVars.value.BASE_URL;
+  static readonly AUTHORS_URL: string = envVars.value.AUTHORS_URL;
 }

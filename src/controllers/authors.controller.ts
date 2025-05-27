@@ -7,7 +7,7 @@ export type Author = components['schemas']['Author'];
 export type Authors = components['schemas']['Author'][];
 
 export class AuthorsController extends BaseController {
-  private readonly url = `${Config.BASE_URL}/api/v1/Authors`;
+  private readonly url = Config.AUTHORS_URL;
 
   async getAuthors() {
     const response = await this.request().url(this.url).method('GET').send<Authors>();
