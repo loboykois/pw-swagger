@@ -28,13 +28,14 @@ apiClientFixture.describe('FakeRESTApi.Web V1', () => {
     const authorResponse = await apiClient.authors.createAuthor(authorToCreate, API_STATUSES.SUCCESSFUL_200_STATUS);
     console.log(authorResponse.body);
 
-    const createdAuthor = await apiClient.authors.getAuthorById(authorResponse.body.id ?? -1, API_STATUSES.SUCCESSFUL_200_STATUS);
-    console.log(createdAuthor.body);
-
     const deletedAuthor = await apiClient.authors.deleteAuthor(authorResponse.body.id ?? -1, API_STATUSES.SUCCESSFUL_200_STATUS);
-    console.log(deletedAuthor);
 
-    const receivedDeletedAuthor = await apiClient.authors.getAuthorById(authorResponse.body.id ?? -1, API_STATUSES.SUCCESSFUL_200_STATUS);
-    console.log(receivedDeletedAuthor.body);
+    if ('statusCode' in deletedAuthor) {
+      console.log(deletedAuthor.statusCode);
+      console.log(deletedAuthor.statusText);
+    }
+
+    const receivedDeletedAuthor = await apiClient.authors.getAuthorById(authorResponse.body.id ?? -1, API_STATUSES.NOT_FOUND_404_STATUS);
+    expect(receivedDeletedAuthor.statusText).toEqual('Not Found');
   });
 });

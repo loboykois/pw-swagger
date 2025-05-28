@@ -59,10 +59,14 @@ export class AuthorsController extends BaseController {
   // DELETE
   @step()
   async deleteAuthor(id: number, statusCode: number) {
-    const response = await this.request().url(`${this.url}/${id}`).method('DELETE').send();
+    const response = await this.request().url(`${this.url}/${id}`).method('DELETE').send<{ message: string }>();
 
     expect(response.statusCode).toBe(statusCode);
 
-    return response.body;
+    return response.statusCode === 200
+      ? response
+      : {
+          message: `Error | status code: ${response.statusCode} | status text: ${response.statusText} | headers: ${JSON.stringify(response.headers)}`,
+        };
   }
 }
