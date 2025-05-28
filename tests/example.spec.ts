@@ -19,13 +19,22 @@ apiClientFixture.describe('FakeRESTApi.Web V1', () => {
 
   apiClientFixture('should create author successfully', async ({ apiClient }) => {
     const authorToCreate: components['schemas']['Author'] = {
-      id: 101,
+      id: 1005,
       firstName: 'MyFirstName Author',
       lastName: 'LastName Author',
-      idBook: 101,
+      idBook: 1005,
     };
 
-    const authorsResponse = await apiClient.authors.createAuthor(authorToCreate);
-    console.log(authorsResponse.body);
+    const authorResponse = await apiClient.authors.createAuthor(authorToCreate, API_STATUSES.SUCCESSFUL_200_STATUS);
+    console.log(authorResponse.body);
+
+    const createdAuthor = await apiClient.authors.getAuthorById(authorResponse.body.id ?? -1, API_STATUSES.SUCCESSFUL_200_STATUS);
+    console.log(createdAuthor.body);
+
+    const deletedAuthor = await apiClient.authors.deleteAuthor(authorResponse.body.id ?? -1, API_STATUSES.SUCCESSFUL_200_STATUS);
+    console.log(deletedAuthor);
+
+    const receivedDeletedAuthor = await apiClient.authors.getAuthorById(authorResponse.body.id ?? -1, API_STATUSES.SUCCESSFUL_200_STATUS);
+    console.log(receivedDeletedAuthor.body);
   });
 });

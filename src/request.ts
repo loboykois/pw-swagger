@@ -28,6 +28,18 @@ export class PWRequest {
     return this;
   }
 
+  // formBody(data: Record<string, string | number | boolean>) {
+  //   const stringData: Record<string, string> = Object.fromEntries(
+  //     Object.entries(data).map(([key, value]) => [key, String(value)])
+  //   );
+  //   this.options.data = new URLSearchParams(stringData).toString();
+  //   this.options.headers = {
+  //     ...this.options.headers,
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //   };
+  //   return this;
+  // }
+
   searchParams(searchParams: { [key: string]: string | number | boolean }): this {
     this.options.params = searchParams;
     return this;
@@ -48,7 +60,16 @@ export class PWRequest {
         ...this.options,
       });
 
-      const responseBody = await response.json();
+      let responseBody: T | undefined = undefined;
+      const contentType = response.headers()['content-type'] || '';
+
+      if (contentType.includes('application/json')) {
+        try {
+          responseBody = await response.json();
+        } catch (e) {
+          responseBody = undefined;
+        }
+      }
 
       return {
         statusCode: response.status(),
