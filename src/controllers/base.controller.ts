@@ -5,9 +5,13 @@ export type ControllerOptions = {
 };
 
 export class BaseController {
-  constructor(protected readonly options: ControllerOptions) {}
+  protected readonly baseUrl: string;
+
+  constructor(protected readonly options: ControllerOptions) {
+    this.baseUrl = this.options.url.endsWith('/') ? this.options.url : `${this.options.url}/`;
+  }
 
   protected request(): PWRequest {
-    return new PWRequest().url(this.options.url);
+    return new PWRequest().url(this.baseUrl);
   }
 }

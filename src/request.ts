@@ -5,7 +5,7 @@ export class PWRequest {
     url: string;
     method: string;
     headers: Record<string, string>;
-    body: unknown;
+    data: unknown;
     params: { [key: string]: string | number | boolean };
   }> = {};
 
@@ -34,7 +34,7 @@ export class PWRequest {
   }
 
   body(data: unknown): this {
-    this.options.body = data;
+    this.options.data = data;
     return this;
   }
 
